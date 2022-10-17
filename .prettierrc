@@ -1,0 +1,9 @@
+tabWidth: 2
+semi: true
+singleQuote: true
+trailingComma: none
+jsxBracketSameLine: false
+bracketSpacing: true
+jsxSingleQuote: true
+arrowParens: always
+printWidth: 80
