@@ -1,4 +1,4 @@
-const HtmlWebpackInlineSourcePlugin = require('@effortlessmotion/html-webpack-inline-source-plugin');
+const InlineChunkHtmlPlugin = require('react-dev-utils/InlineChunkHtmlPlugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const webpack = require('webpack');
 const path = require('path');
@@ -8,29 +8,40 @@ module.exports = (env, argv) => ({
   devtool: argv.mode === 'production' ? false : 'inline-source-map',
 
   entry: {
-    ui: './src/ui/index.ts',
+    ui: './src/ui/index.tsx',
     code: './src/code.ts'
   },
   resolve: {
-    extensions: ['.ts']
+    extensions: ['.ts', '.tsx']
   },
   module: {
     rules: [
       {
-        test: /\.ts$/,
+        test: /\.tsx?$/,
         exclude: /node_modules/,
         use: 'ts-loader'
+      },
+      {
+        test: /\.scss$/,
+        use: ['style-loader', 'css-loader', 'sass-loader']
       }
     ]
   },
+  output: {
+    filename: '[name].js',
+    path: path.resolve(__dirname, 'dist') // Compile into a folder called "dist"
+  },
+  // Tells Webpack to generate "ui.html" and to inline "ui.ts" into it
   plugins: [
+    new webpack.DefinePlugin({
+      global: {} // Fix missing symbol error when running in developer VM
+    }),
     new HtmlWebpackPlugin({
       inject: 'body',
       template: './src/ui/index.html',
       filename: 'ui.html',
-      inlineSource: '.(js)$',
       chunks: ['ui']
     }),
-    new HtmlWebpackInlineSourcePlugin()
+    new InlineChunkHtmlPlugin(HtmlWebpackPlugin, [/ui/])
   ]
 });

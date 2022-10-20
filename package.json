@@ -13,11 +13,22 @@
     "url": "https://www.abdelhakimrafik.com"
   },
   "license": "MIT",
-  "dependencies": {},
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "svg2ttf": "^6.0.3"
+  },
   "devDependencies": {
-    "@effortlessmotion/html-webpack-inline-source-plugin": "^1.0.3",
     "@figma/plugin-typings": "*",
+    "@types/react": "^18.0.21",
+    "@types/react-dom": "^18.0.6",
+    "@types/svg2ttf": "^5.0.1",
+    "css-loader": "^6.7.1",
     "html-webpack-plugin": "^5.5.0",
+    "react-dev-utils": "^12.0.1",
+    "sass": "^1.55.0",
+    "sass-loader": "^13.1.0",
+    "style-loader": "^3.3.1",
     "ts-loader": "^9.4.1",
     "typescript": "*",
     "webpack": "^5.74.0",
