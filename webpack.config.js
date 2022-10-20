@@ -3,21 +3,25 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const webpack = require('webpack');
 const path = require('path');
 
-module.exports = (env, argv) => ({
-  mode: argv.mode === 'production' ? 'production' : 'development',
-  devtool: argv.mode === 'production' ? false : 'inline-source-map',
+module.exports = (_, argv) => ({
+  mode: argv.mode === 'development' ? 'development' : 'production',
+  devtool: argv.mode === 'development' ? 'inline-source-map' : false,
 
   entry: {
-    ui: './src/ui/index.tsx',
-    code: './src/code.ts'
+    ui: path.resolve(__dirname, 'src/ui/index.ts'),
+    code: path.resolve(__dirname, 'src/code.ts')
   },
   resolve: {
-    extensions: ['.ts', '.tsx']
+    extensions: ['.ts']
   },
   module: {
     rules: [
       {
-        test: /\.tsx?$/,
+        test: /\.pug$/,
+        use: 'pug-loader'
+      },
+      {
+        test: /\.ts$/,
         exclude: /node_modules/,
         use: 'ts-loader'
       },
@@ -29,16 +33,12 @@ module.exports = (env, argv) => ({
   },
   output: {
     filename: '[name].js',
-    path: path.resolve(__dirname, 'dist') // Compile into a folder called "dist"
+    path: path.resolve(__dirname, 'dist')
   },
-  // Tells Webpack to generate "ui.html" and to inline "ui.ts" into it
   plugins: [
-    new webpack.DefinePlugin({
-      global: {} // Fix missing symbol error when running in developer VM
-    }),
     new HtmlWebpackPlugin({
       inject: 'body',
-      template: './src/ui/index.html',
+      template: path.resolve(__dirname, 'src/ui/template.pug'),
       filename: 'ui.html',
       chunks: ['ui']
     }),
