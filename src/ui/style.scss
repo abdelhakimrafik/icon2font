@@ -1,1 +1,81 @@
+@import './mixins/index.scss';
 
+body {
+  margin: 16px;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  margin-block-end: 0;
+
+  .content {
+    flex: 1;
+  }
+
+  .form-control {
+    margin-block-end: 12px;
+
+    label {
+      @include fs-label($clr-text-light);
+
+      display: block;
+      margin-block-end: 5px;
+    }
+    input {
+      background: none;
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      border-radius: 4px;
+      width: 100%;
+      height: 45px;
+      padding-inline: 5px;
+    }
+  }
+
+  .advanced-settings {
+    .toggle {
+      @include fs-label($clr-text-brand);
+
+      margin-block: 10px;
+    }
+  }
+
+  .export-options {
+    & > label {
+      @include fs-label($clr-text-light);
+
+      display: block;
+    }
+
+    .export-options-content {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      row-gap: 10px;
+      margin-block-start: 12px;
+    }
+  }
+
+  .actions {
+    .submit {
+      @include fs-label($clr-text-lighter);
+
+      width: 100%;
+      height: 43px;
+      font-weight: 600;
+      background: $clr-bg-bran;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+
+      i {
+        padding: 2px 5px;
+        font-style: normal;
+        font-size: 11px;
+        background-color: $clr-bg-lighter;
+        border-radius: 45%;
+        margin-inline-start: 10px;
+      }
+    }
+  }
+}

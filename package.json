@@ -13,9 +13,17 @@
     "url": "https://www.abdelhakimrafik.com"
   },
   "license": "MIT",
+  "dependencies": {
+    "file-saver": "^2.0.5",
+    "jszip": "^3.10.1"
+  },
   "devDependencies": {
     "@figma/plugin-typings": "*",
+    "@typescript-eslint/eslint-plugin": "^5.40.1",
+    "@typescript-eslint/parser": "^5.40.1",
     "css-loader": "^6.7.1",
+    "eslint": "^8.25.0",
+    "eslint-config-prettier": "^8.5.0",
     "html-webpack-plugin": "^5.5.0",
     "pug": "^3.0.2",
     "pug-loader": "^2.4.0",
@@ -24,6 +32,7 @@
     "sass-loader": "^13.1.0",
     "style-loader": "^3.3.1",
     "ts-loader": "^9.4.1",
+    "tsconfig-paths-webpack-plugin": "^4.0.0",
     "typescript": "*",
     "webpack": "^5.74.0",
     "webpack-cli": "^4.10.0"

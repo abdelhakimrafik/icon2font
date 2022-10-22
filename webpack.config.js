@@ -1,6 +1,6 @@
 const InlineChunkHtmlPlugin = require('react-dev-utils/InlineChunkHtmlPlugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const webpack = require('webpack');
+const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 const path = require('path');
 
 module.exports = (_, argv) => ({
@@ -12,6 +12,7 @@ module.exports = (_, argv) => ({
     code: path.resolve(__dirname, 'src/code.ts')
   },
   resolve: {
+    plugins: [new TsconfigPathsPlugin()],
     extensions: ['.ts']
   },
   module: {
