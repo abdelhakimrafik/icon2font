@@ -2,10 +2,13 @@ const InlineChunkHtmlPlugin = require('react-dev-utils/InlineChunkHtmlPlugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 const path = require('path');
+const webpack = require('webpack');
 
 module.exports = (_, argv) => ({
   mode: argv.mode === 'development' ? 'development' : 'production',
   devtool: argv.mode === 'development' ? 'inline-source-map' : false,
+
+  target: 'web',
 
   entry: {
     ui: path.resolve(__dirname, 'src/ui/index.ts'),
@@ -13,7 +16,12 @@ module.exports = (_, argv) => ({
   },
   resolve: {
     plugins: [new TsconfigPathsPlugin()],
-    extensions: ['.ts']
+    extensions: ['.ts', '.js'],
+    fallback: {
+      stream: require.resolve('stream-browserify'),
+      buffer: require.resolve('buffer/'),
+      punycode: require.resolve('punycode')
+    }
   },
   module: {
     rules: [
@@ -43,6 +51,9 @@ module.exports = (_, argv) => ({
       filename: 'ui.html',
       chunks: ['ui']
     }),
-    new InlineChunkHtmlPlugin(HtmlWebpackPlugin, [/ui/])
+    new InlineChunkHtmlPlugin(HtmlWebpackPlugin, [/ui/]),
+    new webpack.ProvidePlugin({
+      process: 'process/browser'
+    })
   ]
 });

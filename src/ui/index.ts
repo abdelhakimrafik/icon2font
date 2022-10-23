@@ -1,31 +1,27 @@
+import JSZip from 'jszip';
+import { Buffer } from 'buffer';
+import { saveAs } from 'file-saver';
 import { request, response } from '@utils/constants';
 import './style.scss';
 
-window.onload = () => {
-  const form = document.getElementById('form');
-  form?.addEventListener('submit', onSubmit);
+const save = (data: any) => {
+  const zip = new JSZip();
 
-  // get number of selected icons
-  parent.postMessage(
-    { pluginMessage: { type: request.GET_ICONS_NUMBER } },
-    '*'
-  );
+  zip.file(`test.ttf`, Buffer.from(data.ttf));
+  zip.file(`test.svg`, Buffer.from(data.svgFont));
+
+  zip
+    .generateAsync({
+      type: 'blob'
+    })
+    .then((file) => {
+      saveAs(file, `test.zip`);
+    });
 };
 
-window.onmessage = (msg: MessageEvent) => {
-  console.log('>>', msg);
-
-  if (!msg.data?.pluginMessage) {
-    return;
-  }
-
-  const { type, data } = msg.data.pluginMessage;
-
-  switch (type) {
-    case response.UPDATE_ICONS_NUMBER:
-      updateIconsNumber(data.count);
-      break;
-  }
+const updateIconsNumber = (count: number) => {
+  const countContainer = document.getElementById('count');
+  if (countContainer) countContainer.innerHTML = count.toString();
 };
 
 const onSubmit = (e: SubmitEvent) => {
@@ -40,18 +36,34 @@ const onSubmit = (e: SubmitEvent) => {
     const value = input.value;
     const opt = options[key];
 
+    if (value === '') return;
+
     if (opt == null) options[key] = value;
     else if (Array.isArray(opt)) opt.push(value);
     else options[key] = [opt, value];
   });
 
   parent.postMessage(
-    { pluginMessage: { type: request.CREATE_BUNDLE, options } },
+    { pluginMessage: { type: request.CREATE_BUNDLE, data: options } },
     '*'
   );
 };
 
-const updateIconsNumber = (count: number) => {
-  const countContainer = document.getElementById('count');
-  if (countContainer) countContainer.innerHTML = count.toString();
+window.onload = () => {
+  const form = document.getElementById('form');
+  form?.addEventListener('submit', onSubmit);
+};
+
+window.onmessage = (msg: MessageEvent) => {
+  if (!msg.data?.pluginMessage) return;
+
+  const { type, data } = msg.data.pluginMessage;
+
+  switch (type) {
+    case response.UPDATE_ICONS_NUMBER:
+      updateIconsNumber(data);
+      break;
+    case response.SAVE:
+      save(data);
+  }
 };

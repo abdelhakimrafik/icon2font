@@ -30,21 +30,29 @@ form#form.container
   .content
     .form-control
       label(for="file-name") File name:
-      input(id="file-name" name="file-name" type="text" placeholder="Generated files name")
+      input(id="file-name" name="fileName" type="text" placeholder="Generated files name")
     .advanced-settings
       .toggle
         | Advanced settings
 
       .form-control
+        label(for="font-name") Font name:
+        input(id="font-name" name="fontName" type="text" placeholder="Font name")
+      
+      .form-control
         label(for="prefix") Prefix:
         input(id="prefix" name="prefix" type="text" placeholder="Prefix for SVGs and classes...")
+      
+      .form-control
+        label(for="suffix") Suffix:
+        input(id="suffix" name="suffix" type="text" placeholder="Suffix for SVGs and classes...")
 
       .export-options
         label Export options:
         .export-options-content
           each opt, index in exportOpts
             .export-opt
-              input(id=`it${index}` name="export-opts[]" type="checkbox" value=opt.value checked)
+              input(id=`it${index}` name="exportOptions" type="checkbox" value=opt.value checked)
               label(for=`it${index}`)= opt.text
   .actions
     button.submit(type="submit")
