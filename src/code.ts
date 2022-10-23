@@ -1,35 +1,68 @@
-// This plugin will open a window to prompt the user to enter a number, and
-// it will then create that many rectangles on the screen.
+import { request, response } from '@src/core/constants';
+import { OptionsType, UIRequestEventType } from '@src/types';
+import { iconToFont } from '@core/generate';
+import { hasDuplicatedNames } from '@core/utils';
 
-// This file holds the main code for the plugins. It has access to the *document*.
-// You can access browser APIs in the <script> tag inside "ui.html" which has a
-// full browser environment (see documentation).
+const onMessage = ({ type, data }: UIRequestEventType) => {
+  if (!type) return;
 
-// This shows the HTML page in "ui.html".
-figma.showUI(__html__, { themeColors: true });
+  switch (type) {
+    case request.CREATE_BUNDLE:
+      createBundle(data);
+      break;
 
-// Calls to "parent.postMessage" from within the HTML page will trigger this
-// callback. The callback will be passed the "pluginMessage" property of the
-// posted message.
-figma.ui.onmessage = (msg) => {
-  console.log('#> recieved', msg);
+    case request.NOTIFY:
+      figma.notify(data, { error: true });
+      break;
 
-  // One way of distinguishing between different types of messages sent from
-  // your HTML page is to use an object with a "type" property like this.
-  if (msg.type === 'create-rectangles') {
-    const nodes: SceneNode[] = [];
-    for (let i = 0; i < msg.count; i++) {
-      const rect = figma.createRectangle();
-      rect.x = i * 150;
-      rect.fills = [{ type: 'SOLID', color: { r: 1, g: 0.5, b: 0 } }];
-      figma.currentPage.appendChild(rect);
-      nodes.push(rect);
-    }
-    figma.currentPage.selection = nodes;
-    figma.viewport.scrollAndZoomIntoView(nodes);
+    default:
+      console.error(`ERROR: request type ${type} unknown`);
+      break;
+  }
+};
+
+const postSelectedIconsNumber = () => {
+  figma.ui.postMessage({
+    type: response.UPDATE_ICONS_NUMBER,
+    data: figma.currentPage.selection.length
+  });
+};
+
+const createBundle = async (options: OptionsType) => {
+  const nodes: ReadonlyArray<SceneNode> = figma.currentPage.selection;
+
+  if (nodes.length === 0) {
+    figma.ui.postMessage({
+      type: response.ERROR,
+      data: 'Please select at least one icon to export'
+    });
+
+    return;
   }
 
-  // Make sure to close the plugin when you're done. Otherwise the plugin will
-  // keep running, which shows the cancel button at the bottom of the screen.
-  figma.closePlugin();
+  if (hasDuplicatedNames(nodes)) {
+    figma.ui.postMessage({
+      type: response.ERROR,
+      data: 'Icons has duplicated names'
+    });
+
+    return;
+  }
+
+  const fontBundle = await iconToFont(nodes, options);
+
+  figma.ui.postMessage({ type: response.SAVE, data: fontBundle });
 };
+
+(function init() {
+  const selectedNodes = figma.currentPage.selection.length;
+
+  if (!selectedNodes) figma.notify('Please select at least one icon to export');
+
+  // render the ui
+  figma.showUI(__html__, { themeColors: true, width: 300, height: 530 });
+  figma.ui.onmessage = onMessage;
+  figma.on('selectionchange', postSelectedIconsNumber);
+
+  postSelectedIconsNumber();
+})();

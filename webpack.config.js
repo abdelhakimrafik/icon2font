@@ -1,36 +1,63 @@
-const HtmlWebpackInlineSourcePlugin = require('@effortlessmotion/html-webpack-inline-source-plugin');
+const InlineChunkHtmlPlugin = require('react-dev-utils/InlineChunkHtmlPlugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const webpack = require('webpack');
+const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 const path = require('path');
+const webpack = require('webpack');
 
-module.exports = (env, argv) => ({
-  mode: argv.mode === 'production' ? 'production' : 'development',
-  devtool: argv.mode === 'production' ? false : 'inline-source-map',
+module.exports = (_, argv) => ({
+  mode: argv.mode === 'development' ? 'development' : 'production',
+  devtool: argv.mode === 'development' ? 'inline-source-map' : false,
+
+  target: 'web',
 
   entry: {
-    ui: './src/ui/index.ts',
-    code: './src/code.ts'
+    ui: path.resolve(__dirname, 'src/ui/index.ts'),
+    code: path.resolve(__dirname, 'src/code.ts')
   },
   resolve: {
-    extensions: ['.ts']
+    plugins: [new TsconfigPathsPlugin()],
+    extensions: ['.ts', '.js'],
+    fallback: {
+      stream: require.resolve('stream-browserify'),
+      path: require.resolve('path-browserify'),
+      buffer: require.resolve('buffer/'),
+      punycode: require.resolve('punycode')
+    }
   },
   module: {
     rules: [
       {
+        test: /\.pug$/,
+        use: 'pug-loader'
+      },
+      {
         test: /\.ts$/,
         exclude: /node_modules/,
         use: 'ts-loader'
+      },
+      {
+        test: /\.scss$/,
+        use: ['style-loader', 'css-loader', 'sass-loader']
       }
     ]
+  },
+  output: {
+    filename: '[name].js',
+    path: path.resolve(__dirname, 'dist')
   },
   plugins: [
     new HtmlWebpackPlugin({
       inject: 'body',
-      template: './src/ui/index.html',
+      template: path.resolve(__dirname, 'src/ui/template.pug'),
       filename: 'ui.html',
-      inlineSource: '.(js)$',
       chunks: ['ui']
     }),
-    new HtmlWebpackInlineSourcePlugin()
+    new InlineChunkHtmlPlugin(HtmlWebpackPlugin, [/ui/]),
+    new webpack.ProvidePlugin({
+      Buffer: ['buffer', 'Buffer']
+    }),
+    new webpack.ProvidePlugin({
+      process: 'process/browser'
+    })
   ]
 });
