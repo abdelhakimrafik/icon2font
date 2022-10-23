@@ -1,13 +1,22 @@
-import { request, response } from '@utils/constants';
-import { iconsToFont } from '@utils/index';
+import { request, response } from '@src/core/constants';
 import { OptionsType, UIRequestEventType } from '@src/types';
+import { iconToFont } from '@core/generate';
+import { hasDuplicatedNames } from '@core/utils';
 
 const onMessage = ({ type, data }: UIRequestEventType) => {
   if (!type) return;
 
   switch (type) {
     case request.CREATE_BUNDLE:
-      createBandle(data);
+      createBundle(data);
+      break;
+
+    case request.NOTIFY:
+      figma.notify(data, { error: true });
+      break;
+
+    default:
+      console.error(`ERROR: request type ${type} unknown`);
       break;
   }
 };
@@ -19,28 +28,34 @@ const postSelectedIconsNumber = () => {
   });
 };
 
-const createBandle = async (options: OptionsType) => {
+const createBundle = async (options: OptionsType) => {
   const nodes: ReadonlyArray<SceneNode> = figma.currentPage.selection;
 
   if (nodes.length === 0) {
-    figma.notify('Please select at least one icon to export', { error: true });
+    figma.ui.postMessage({
+      type: response.ERROR,
+      data: 'Please select at least one icon to export'
+    });
 
     return;
   }
 
-  // TODO: check for duplicate names
+  if (hasDuplicatedNames(nodes)) {
+    figma.ui.postMessage({
+      type: response.ERROR,
+      data: 'Icons has duplicated names'
+    });
 
-  const font = await iconsToFont(nodes, options);
-  console.log(font);
+    return;
+  }
 
-  // TODO: notify ui to save generated streams (result)
-  figma.ui.postMessage({ type: response.SAVE, data: font });
+  const fontBundle = await iconToFont(nodes, options);
 
-  // figma.closePlugin();
+  figma.ui.postMessage({ type: response.SAVE, data: fontBundle });
 };
 
 (function init() {
-  const selectedNodes: number = figma.currentPage.selection.length;
+  const selectedNodes = figma.currentPage.selection.length;
 
   if (!selectedNodes) figma.notify('Please select at least one icon to export');
 

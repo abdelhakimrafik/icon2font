@@ -19,6 +19,7 @@ module.exports = (_, argv) => ({
     extensions: ['.ts', '.js'],
     fallback: {
       stream: require.resolve('stream-browserify'),
+      path: require.resolve('path-browserify'),
       buffer: require.resolve('buffer/'),
       punycode: require.resolve('punycode')
     }
@@ -52,6 +53,9 @@ module.exports = (_, argv) => ({
       chunks: ['ui']
     }),
     new InlineChunkHtmlPlugin(HtmlWebpackPlugin, [/ui/]),
+    new webpack.ProvidePlugin({
+      Buffer: ['buffer', 'Buffer']
+    }),
     new webpack.ProvidePlugin({
       process: 'process/browser'
     })

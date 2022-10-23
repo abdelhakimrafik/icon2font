@@ -1,0 +1,59 @@
+import {
+  DEFAULT_DELIMITER,
+  DEFAULT_FONT_NAME,
+  DEFAULT_PREFIX
+} from '@src/core/constants';
+import { OptionsType } from '@src/types';
+import {
+  exportGlyphs,
+  glyphsToFontConfig,
+  glyphsToSvgFont,
+  svgFontToTTF,
+  TTFToEot,
+  TTFToWoff
+} from '@core/utils';
+import { generateCSS, generateHTML } from '@core/template';
+
+export const iconToFont = async (
+  nodes: ReadonlyArray<SceneNode>,
+  options: OptionsType
+) => {
+  const {
+    fontName = DEFAULT_FONT_NAME,
+    prefix,
+    suffix,
+    delimiter = DEFAULT_DELIMITER
+  } = options;
+
+  const glyphs = await exportGlyphs(nodes, {
+    prefix,
+    suffix,
+    delimiter
+  });
+
+  const fontConfig = glyphsToFontConfig(glyphs, fontName);
+
+  const svgFont = await glyphsToSvgFont(glyphs, {
+    fontName,
+    fontHeight: 1000,
+    normalize: true
+  });
+
+  const ttf = svgFontToTTF(svgFont);
+  const woff = TTFToWoff(ttf);
+  const eot = TTFToEot(ttf);
+
+  const css = generateCSS(fontConfig, prefix || DEFAULT_PREFIX);
+  const html = generateHTML(fontConfig, prefix || DEFAULT_PREFIX);
+
+  return {
+    fontName,
+    glyphs,
+    fontConfig,
+    ttf,
+    woff,
+    eot,
+    css,
+    html
+  };
+};

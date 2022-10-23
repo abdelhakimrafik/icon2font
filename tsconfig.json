@@ -10,7 +10,7 @@
     "baseUrl": "./",
     "paths": {
       "@src/*": ["./src/*"],
-      "@utils/*": ["./src/utils/*"]
+      "@core/*": ["./src/core/*"]
     },
     "lib": ["es6", "dom"]
   },

@@ -33,14 +33,6 @@ body {
     }
   }
 
-  .advanced-settings {
-    .toggle {
-      @include fs-label($clr-text-brand);
-
-      margin-block: 10px;
-    }
-  }
-
   .export-options {
     & > label {
       @include fs-label($clr-text-light);
@@ -63,10 +55,18 @@ body {
       width: 100%;
       height: 43px;
       font-weight: 600;
-      background: $clr-bg-bran;
+      background: $clr-bg-brand;
       border: none;
       border-radius: 3px;
       cursor: pointer;
+
+      &:hover {
+        background-color: $clr-bg-brand-hover;
+      }
+
+      svg {
+        display: none;
+      }
 
       i {
         padding: 2px 5px;
@@ -77,5 +77,35 @@ body {
         margin-inline-start: 10px;
       }
     }
+  }
+
+  &.loading {
+    .form-control {
+      input {
+        pointer-events: none;
+      }
+    }
+
+    .actions {
+      .submit {
+        pointer-events: none;
+
+        svg {
+          animation: spin 2s linear infinite;
+          display: inline-block;
+        }
+
+        & > div {
+          display: none;
+        }
+      }
+    }
+  }
+}
+
+@keyframes spin {
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
   }
 }

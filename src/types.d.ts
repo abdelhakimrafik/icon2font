@@ -1,8 +1,11 @@
+import { Readable } from 'stream';
+import { request } from '@src/core/constants';
+
 export type OptionsType = {
-  fileName: string;
   fontName?: string;
   prefix?: string;
   suffix?: string;
+  delimiter?: string;
   exportOptions?: string[];
 };
 
@@ -11,20 +14,30 @@ export type UIRequestEventType = {
   data: any;
 };
 
-export type GlyphType = {
-  content: string;
-  metadata: {
-    name: string;
-    unicode: string[];
-  };
+export type GlyphMetadata = {
+  name: string;
+  unicode: string[];
 };
 
-export type GlyphsExportOptionsType = {
-  prefix?: string;
-  suffix?: string;
+export type GlyphType = {
+  content: string;
+  metadata: GlyphMetadata;
 };
+
+export type GlyphsExportOptionsType = Omit<
+  OptionsType,
+  'fontName' | 'exportOptions'
+>;
 
 export type FontConfigType = {
   name: string;
-  icons: Record<string, string[]>;
+  icons: Record<string, string | number>;
 };
+
+export interface glyphsToSvgFontOptions {
+  fontName: string;
+  fontHeight?: number;
+  normalize?: boolean;
+}
+
+export type GlyphStreamType = Readable & { metadata?: Partial<GlyphMetadata> };
