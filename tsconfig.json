@@ -8,6 +8,7 @@
     "strict": true,
     "typeRoots": ["./node_modules/@types", "./node_modules/@figma"],
     "baseUrl": "./",
+    "outDir": "dist",
     "paths": {
       "@src/*": ["./src/*"],
       "@core/*": ["./src/core/*"]

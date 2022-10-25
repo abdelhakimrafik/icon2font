@@ -8,7 +8,7 @@ import './style.scss';
 (() => {
   let form: HTMLElement | null;
 
-  const save = (data: any) => {
+  const save = (data: Record<string, any>) => {
     const zip = new JSZip();
     const { fontName, glyphs, fontConfig, ttf, woff, eot, css, sass, html } =
       data;
