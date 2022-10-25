@@ -1,28 +1,12 @@
 -
   const exportOpts = [
     {
-      text: 'Css (.css)',
-      value: 'css'
-    },
-    {
       text: 'Sass (.sass)',
       value: 'sass'
     },
     {
       text: 'React (.tsx)',
       value: 'react'
-    },
-    {
-      text: 'ICO (.ico)',
-      value: 'ico'
-    },
-    {
-      text: 'EPS (.eps)',
-      value: 'eps'
-    },
-    {
-      text: 'SVG (.svg)',
-      value: 'svg'
     }
   ]
 
@@ -49,7 +33,7 @@ form#form.container
       .export-options-content
         each opt, index in exportOpts
           .export-opt
-            input(id=`it${index}` name="exportOptions" type="checkbox" value=opt.value checked)
+            input(id=`it${index}` name="exportOptions" type="checkbox" value=opt.value)
             label(for=`it${index}`)= opt.text
   .actions
     button.submit(type="submit")

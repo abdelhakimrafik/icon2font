@@ -1,32 +1,46 @@
 import path from 'path';
 import { FontConfigType } from '@src/types';
-import { FONT_EXPORT_OPTIONS } from '@core/constants';
+import { SUPPORTED_FONTS } from '@core/constants';
 
-export const generateCSS = (fontConfig: FontConfigType, prefix: string) => {
-  const exportOptions = FONT_EXPORT_OPTIONS;
-  let css = `@font-face {\nfont-family: '${fontConfig.name}';\nsrc: `;
+const generateCssHeader = (
+  { name: fontName }: Omit<FontConfigType, 'icons'>,
+  prefix: string
+) => {
+  const exportOptions = SUPPORTED_FONTS;
+  let css = `@font-face {\nfont-family: '${fontName}';\nsrc: ${exportOptions
+    .map(
+      ({ name: format, ext }) =>
+        `url("${path.join('../fonts', fontName)}.${ext}") format("${format}")`
+    )
+    .join(',\n')};\n}\n`;
 
-  // create font-face
-  for (const [i, opt] of exportOptions.entries()) {
-    css += `url("${path.join('../fonts', fontConfig.name)}.${
-      opt.ext
-    }") format("${opt.name}")`;
-    css += i === exportOptions.length - 1 ? ';\n' : ',\n';
-  }
-
-  css += `}\n.${prefix} {
-    font-family: '${fontConfig.name}' !important;
+  css += `.${prefix} {
+    font-family: '${fontName}' !important;
     font-size: 18px;
     font-style:normal;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }\n`;
 
-  for (const [name, unicode] of Object.entries(fontConfig.icons)) {
-    css += `.${name}:before { content: "\\${unicode}"; }\n`;
-  }
-
   return css;
+};
+
+export const generateCSS = (
+  { icons, ...rest }: FontConfigType,
+  prefix: string
+) => {
+  return `${generateCssHeader(rest, prefix)}\n${Object.entries(icons)
+    .map(([name, unicode]) => `.${name}:before { content: "\\${unicode}"; }\n`)
+    .join('')}`;
+};
+
+export const generateSass = (
+  { icons, ...rest }: FontConfigType,
+  prefix: string
+) => {
+  return `${generateCssHeader(rest, prefix)}\n${Object.entries(icons)
+    .map(([name, unicode]) => `$${name}: "\\${unicode}";\n`)
+    .join('')}`;
 };
 
 export const generateHTML = (fontConfig: FontConfigType, prefix: string) => {

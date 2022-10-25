@@ -12,7 +12,7 @@ import {
   TTFToEot,
   TTFToWoff
 } from '@core/utils';
-import { generateCSS, generateHTML } from '@core/template';
+import { generateCSS, generateHTML, generateSass } from '@core/template';
 
 export const iconToFont = async (
   nodes: ReadonlyArray<SceneNode>,
@@ -22,7 +22,8 @@ export const iconToFont = async (
     fontName = DEFAULT_FONT_NAME,
     prefix,
     suffix,
-    delimiter = DEFAULT_DELIMITER
+    delimiter = DEFAULT_DELIMITER,
+    exportOptions
   } = options;
 
   const glyphs = await exportGlyphs(nodes, {
@@ -44,6 +45,9 @@ export const iconToFont = async (
   const eot = TTFToEot(ttf);
 
   const css = generateCSS(fontConfig, prefix || DEFAULT_PREFIX);
+  const sass = exportOptions?.includes('sass')
+    ? generateSass(fontConfig, prefix || DEFAULT_PREFIX)
+    : null;
   const html = generateHTML(fontConfig, prefix || DEFAULT_PREFIX);
 
   return {
@@ -54,6 +58,7 @@ export const iconToFont = async (
     woff,
     eot,
     css,
+    sass,
     html
   };
 };

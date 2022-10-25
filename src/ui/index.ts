@@ -10,9 +10,8 @@ import './style.scss';
 
   const save = (data: any) => {
     const zip = new JSZip();
-    const { fontName, glyphs, fontConfig, ttf, woff, eot, css, html } = data;
-
-    console.log(fontConfig);
+    const { fontName, glyphs, fontConfig, ttf, woff, eot, css, sass, html } =
+      data;
 
     zip.file(path.join('fonts', `${fontName}.ttf`), ttf);
     zip.file(path.join('fonts', `${fontName}.woff`), woff);
@@ -21,15 +20,19 @@ import './style.scss';
     zip.file(`${fontName}.html`, Buffer.from(html));
     zip.file(`${fontName}.json`, Buffer.from(JSON.stringify(fontConfig)));
 
-    // create svg files
-    for (const glyph of glyphs) {
-      zip.file(
-        path.join('svg', `${glyph.metadata.name}.svg`),
-        Buffer.from(glyph.content)
-      );
+    if (sass) {
+      zip.file(path.join('css', `${fontName}.scss`), Buffer.from(sass));
     }
 
-    console.log('>> save');
+    // create svg files
+    if (glyphs) {
+      for (const glyph of glyphs) {
+        zip.file(
+          path.join('svg', `${glyph.metadata.name}.svg`),
+          Buffer.from(glyph.content)
+        );
+      }
+    }
 
     zip
       .generateAsync({
@@ -60,7 +63,7 @@ import './style.scss';
       const value = input.value;
       const opt = options[key];
 
-      if (value === '') return;
+      if (value === '' || (input.type === 'checkbox' && !input.checked)) return;
 
       if (opt == null) options[key] = value;
       else if (Array.isArray(opt)) opt.push(value);

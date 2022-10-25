@@ -9,7 +9,7 @@ export const DEFAULT_DELIMITER = '-';
 export const START_UNICODE = 0xea01;
 export const COPYRIGHT = 'Create by icon2font <Abdelhakim RAFIK>';
 
-export const FONT_EXPORT_OPTIONS = [
+export const SUPPORTED_FONTS = [
   { name: 'truetype', ext: 'ttf' },
   { name: 'embedded-opentype', ext: 'eot' },
   { name: 'woff', ext: 'woff' }
