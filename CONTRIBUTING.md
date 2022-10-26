@@ -19,7 +19,7 @@ Add issue or comment on other issues and wait for the issue to be assigned befor
 
 Pull requests are the best way to propose changes to the codebase (we use [Git-Flow](https://nvie.com/posts/a-successful-git-branching-model/)). We actively welcome your pull requests:
 
-1. Fork the repo and create your branch from `develop`. Please create the branch in the format: `[feat/fix]/<issue-id>-<issue-name>` (eg: feat/176-angular-template)
+1. Fork the repo and create your branch from `master`. Please create the branch in the format: `[feat/fix]/<issue-id>-<issue-name>` (eg: feat/176-angular-template)
 1. If you've added code that should be tested, add tests.
 1. Ensure the test suite passes.
 1. Make sure your code lints.
