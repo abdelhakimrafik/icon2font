@@ -12,7 +12,12 @@ import {
   TTFToEot,
   TTFToWoff
 } from '@core/utils';
-import { generateCSS, generateHTML, generateSass } from '@core/template';
+import {
+  generateCSS,
+  generateHTML,
+  generateSass,
+  generateReactComponent
+} from '@core/template';
 
 export const iconToFont = async (
   nodes: ReadonlyArray<SceneNode>,
@@ -48,6 +53,9 @@ export const iconToFont = async (
   const sass = exportOptions?.includes('sass')
     ? generateSass(fontConfig, prefix || DEFAULT_PREFIX)
     : null;
+  const react = exportOptions?.includes('react')
+    ? generateReactComponent(fontConfig, prefix || DEFAULT_PREFIX)
+    : null;
   const html = generateHTML(fontConfig, prefix || DEFAULT_PREFIX);
 
   return {
@@ -59,6 +67,7 @@ export const iconToFont = async (
     eot,
     css,
     sass,
+    react,
     html
   };
 };

@@ -17,7 +17,8 @@ export const SUPPORTED_FONTS = [
 
 export enum request {
   CREATE_BUNDLE = 1,
-  NOTIFY
+  NOTIFY,
+  ERROR
 }
 
 export enum response {

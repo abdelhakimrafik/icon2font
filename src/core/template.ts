@@ -19,8 +19,7 @@ const generateCssHeader = (
     font-size: 18px;
     font-style:normal;
     -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-  }\n`;
+    -moz-osx-font-smoothing: grayscale;\n}\n`;
 
   return css;
 };
@@ -38,9 +37,31 @@ export const generateSass = (
   { icons, ...rest }: FontConfigType,
   prefix: string
 ) => {
-  return `${generateCssHeader(rest, prefix)}\n${Object.entries(icons)
-    .map(([name, unicode]) => `$${name}: "\\${unicode}";\n`)
-    .join('')}`;
+  let sass = `${generateCssHeader(rest, prefix)}\n$icons: (\n${Object.entries(
+    icons
+  )
+    .map(([name, unicode]) => `"${name}": "\\${unicode}"`)
+    .join(',\n')}\n);\n`;
+
+  // add mixin
+  sass += `@each $name, $glyph in $icons {\n.#{$name}:before { content: $glyph; }\n}`;
+
+  return sass;
+};
+
+export const generateReactComponent = (
+  { icons, name: fontName }: FontConfigType,
+  prefix: string
+) => {
+  let ts = `import React from 'react';\nimport from './css/${fontName}.scss';\nexport enum Icons {\n${Object.entries(
+    icons
+  )
+    .map(([name]) => `${toPascalCase(name)} = '${name}'`)
+    .join(',\n')}\n}\n`;
+  ts += `export interface IconInterface {\nname: Icons;\n}\n`;
+  ts += `export const Icon = ({name}: IconInterface) => <i className={\`${prefix} \${name}\`}></i>;`;
+
+  return ts;
 };
 
 export const generateHTML = (fontConfig: FontConfigType, prefix: string) => {
@@ -59,4 +80,11 @@ export const generateHTML = (fontConfig: FontConfigType, prefix: string) => {
   }
 
   return html + '</div></body>';
+};
+
+const toPascalCase = (str: string) => {
+  return str
+    .match(/[A-Z]{2,}(?=[A-Z][a-z]+[0-9]*|\b)|[A-Z]?[a-z]+[0-9]*|[A-Z]|[0-9]+/g)
+    ?.map((x) => x.charAt(0).toUpperCase() + x.slice(1).toLowerCase())
+    .join('');
 };

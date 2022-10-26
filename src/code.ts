@@ -11,7 +11,7 @@ const onMessage = ({ type, data }: UIRequestEventType) => {
       createBundle(data);
       break;
 
-    case request.NOTIFY:
+    case request.ERROR:
       figma.notify(data, { error: true });
       break;
 

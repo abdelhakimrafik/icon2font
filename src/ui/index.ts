@@ -10,8 +10,18 @@ import './style.scss';
 
   const save = (data: Record<string, any>) => {
     const zip = new JSZip();
-    const { fontName, glyphs, fontConfig, ttf, woff, eot, css, sass, html } =
-      data;
+    const {
+      fontName,
+      glyphs,
+      fontConfig,
+      ttf,
+      woff,
+      eot,
+      css,
+      sass,
+      react,
+      html
+    } = data;
 
     zip.file(path.join('fonts', `${fontName}.ttf`), ttf);
     zip.file(path.join('fonts', `${fontName}.woff`), woff);
@@ -24,14 +34,16 @@ import './style.scss';
       zip.file(path.join('css', `${fontName}.scss`), Buffer.from(sass));
     }
 
+    if (react) {
+      zip.file(`Icon.tsx`, Buffer.from(react));
+    }
+
     // create svg files
-    if (glyphs) {
-      for (const glyph of glyphs) {
-        zip.file(
-          path.join('svg', `${glyph.metadata.name}.svg`),
-          Buffer.from(glyph.content)
-        );
-      }
+    for (const glyph of glyphs) {
+      zip.file(
+        path.join('svg', `${glyph.metadata.name}.svg`),
+        Buffer.from(glyph.content)
+      );
     }
 
     zip
@@ -43,7 +55,18 @@ import './style.scss';
         // set loading mode
         setLoading(false);
       })
-      .catch((err) => console.log('ERROR: ', err));
+      .catch((err) => {
+        parent.postMessage(
+          {
+            pluginMessage: {
+              type: request.ERROR,
+              data: 'An error occured, Please try again'
+            }
+          },
+          '*'
+        );
+        console.log('ERROR: ', err);
+      });
   };
 
   const updateIconsNumber = (count: number) => {
@@ -106,7 +129,7 @@ import './style.scss';
       case response.ERROR:
         setLoading(false);
         parent.postMessage(
-          { pluginMessage: { type: request.NOTIFY, data } },
+          { pluginMessage: { type: request.ERROR, data } },
           '*'
         );
         break;
