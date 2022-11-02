@@ -36,9 +36,6 @@ This project exists thanks to all the people who contribute. [Contribute](CONTRI
 <a href="https://github.com/abdelhakimrafik">
   <img style="border-radius:50%" title="Abdelhakim RAFIK" src="https://github.com/abdelhakimrafik.png?size=50">
 </a>
-<a href="https://github.com/rafikalid">
-  <img style="border-radius:50%" title="Khalid RAFIK" src="https://github.com/rafikalid.png?size=50">
-</a>
 
 ## License
 
