@@ -18,7 +18,7 @@ Figma plugin to easily export icons to font and output a TTF/EOT/WOFF/SVG/CSS/SA
 
 ## Usage
 
-1. Install Figma Plugin `icon2font`
+1. Install Figma Plugin `Icon2font`
 1. Select icons to be exported
 1. Run the plugin under plugins section
 1. Fill inputs if needed (`Fontname`, `Prefix`, `Suffix`, `Delimiter`) [Optional]
