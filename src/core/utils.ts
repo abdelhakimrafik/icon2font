@@ -18,7 +18,7 @@ const generateName = (
 ) => {
   return `${prefix ? prefix + delimiter : ''}${name}${
     suffix ? delimiter + suffix : ''
-  }`.replace(/\s/g, '');
+  }`.replace(/\s|\//g, '');
 };
 
 const generateUnicode = (index: number) => {
@@ -40,6 +40,7 @@ export const exportGlyphs = (
         );
 
         const name = generateName(node.name, options);
+        console.log(node.name, '>>', name);
         const unicode = generateUnicode(index);
 
         return {
@@ -102,9 +103,13 @@ export const hasDuplicatedNames = (nodes: ReadonlyArray<SceneNode>) => {
   const names: string[] = [];
 
   for (const node of nodes) {
+    console.log('>>>', node.name);
     if (names.includes(node.name)) return true;
+    console.log('>> ADDED');
     names.push(node.name);
   }
+
+  console.log('>> false');
 
   return false;
 };
