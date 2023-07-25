@@ -27,7 +27,7 @@ Figma plugin to easily export icons to font and output a TTF/EOT/WOFF/SVG/CSS/SA
 ## Contributing
 
 Kindly read our [Contributing](CONTRIBUTING.md) Guide to learn and understand about our development process,
-how to propose bug fixes and improvements, and how to build and test your changes to ToolJet.
+how to propose bug fixes and improvements, and how to build and test your changes to Icon2font.
 
 ## Contributors
 
