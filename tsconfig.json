@@ -1,20 +1,32 @@
 {
   "compilerOptions": {
-    "target": "es6",
-    "moduleResolution": "node",
-    "esModuleInterop": true,
-    "allowJs": true,
-    "allowSyntheticDefaultImports": true,
-    "strict": true,
-    "typeRoots": ["./node_modules/@types", "./node_modules/@figma"],
-    "baseUrl": "./",
+    "target": "ES2020",
+    "useDefineForClassFields": true,
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "skipLibCheck": true,
+
+    /* Bundler mode */
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "react-jsx",
     "outDir": "dist",
+    "types": ["@figma/plugin-typings"],
     "paths": {
-      "@src/*": ["./src/*"],
+      "@ui/*": ["./src/ui/*"],
       "@core/*": ["./src/core/*"]
     },
-    "lib": ["es6", "dom"]
+
+    /* Linting */
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true
   },
-  "exclude": ["node_modules"],
-  "skipLibCheck": true
+  "include": ["src"],
+  "exclude": [".yarn"],
+  "references": [{ "path": "./tsconfig.node.json" }]
 }
