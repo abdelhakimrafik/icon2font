@@ -1,0 +1,15 @@
+@import '../../styles/mixins/index.scss';
+
+.container {
+  .label {
+    display: inline-block;
+    margin-inline-start: 5px;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 13px;
+    cursor: pointer;
+  }
+  .input {
+    cursor: pointer;
+  }
+}

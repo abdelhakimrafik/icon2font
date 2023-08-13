@@ -1,0 +1,19 @@
+@import '../../styles/mixins/index.scss';
+
+.container {
+  .label {
+    display: block;
+    margin-block-end: 5px;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    color: $clr-text-light;
+  }
+  .input {
+    width: 100%;
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    border-radius: 4px;
+    padding: 14px 7px;
+    background: none;
+  }
+}

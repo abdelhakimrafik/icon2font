@@ -16,6 +16,7 @@
     "outDir": "dist",
     "types": ["@figma/plugin-typings"],
     "paths": {
+      "@src/*": ["./src/*"],
       "@ui/*": ["./src/ui/*"],
       "@core/*": ["./src/core/*"]
     },

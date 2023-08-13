@@ -1,0 +1,45 @@
+@import './styles/mixins/index.scss';
+
+// ---- Global style ----
+:global {
+  * {
+    box-sizing: border-box;
+  }
+
+  html {
+    font-family: $ff-primary;
+  }
+
+  #root {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+}
+
+// ----------------------
+
+.container,
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.wrapper {
+  row-gap: 15px;
+}
+
+.options {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.counter {
+  font-style: normal;
+  font-size: 11px;
+  padding: 2px 5px;
+  margin-inline-start: 5px;
+  background-color: $clr-bg-lighter;
+  border-radius: 45%;
+}
