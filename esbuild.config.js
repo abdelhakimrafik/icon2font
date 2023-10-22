@@ -8,7 +8,7 @@ esbuild.build({
   plugins: [
     resolve({
       stream: import('stream-browserify'),
-      buffer: import('buffer/'),
+      buffer: import('buffer'),
       punycode: import('punycode')
     })
   ]
