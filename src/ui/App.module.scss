@@ -1,0 +1,28 @@
+@import './styles/mixins/index.scss';
+
+// ---- Global style ----
+:global {
+  * {
+    box-sizing: border-box;
+  }
+
+  html {
+    font-family: $ff-primary;
+  }
+
+  body {
+    margin: 0;
+  }
+
+  #root {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+}
+
+// ----------------------
+
+.tabs {
+  flex: 1;
+}

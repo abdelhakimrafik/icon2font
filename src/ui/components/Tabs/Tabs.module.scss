@@ -1,0 +1,30 @@
+.navbar {
+  border-bottom: 1px solid #f3f3f3;
+  padding: 15px 20px;
+
+  ul {
+    list-style: none;
+    margin-block: 0;
+    padding-inline: 0;
+
+    li {
+      display: inline-block;
+      margin-inline-end: 30px;
+      color: #999999;
+      font-size: 14px;
+      cursor: pointer;
+
+      :hover {
+        color: #000000;
+      }
+
+      &.active {
+        color: #000000;
+      }
+    }
+  }
+}
+
+.wrapper {
+  padding: 10px;
+}

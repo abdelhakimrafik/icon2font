@@ -26,6 +26,6 @@ const onMessage = ({ type, data }: UIRequestEventType) => {
   console.log(figma.currentPage.selection);
 
   // render the ui
-  figma.showUI(__html__, { themeColors: true, width: 300, height: 530 });
+  figma.showUI(__html__, { themeColors: true, width: 730, height: 530 });
   figma.ui.onmessage = onMessage;
 })();
