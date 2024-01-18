@@ -1,5 +1,5 @@
-import { request } from '@src/core/constants';
-import { UIRequestEventType } from '@src/types';
+import { request } from '@core/constants';
+import { UIRequestEventType } from '@core/types';
 
 const onMessage = ({ type, data }: UIRequestEventType) => {
   if (!type) return;
@@ -19,11 +19,9 @@ const onMessage = ({ type, data }: UIRequestEventType) => {
 };
 
 (function init() {
-  const selectedNodes = figma.currentPage.selection.length;
+  const selectedNodes = figma.currentPage.selection;
 
-  if (!selectedNodes) figma.notify('Please select at least one icon to export');
-
-  console.log(figma.currentPage.selection);
+  console.log('Selected Nodes >>', selectedNodes);
 
   // render the ui
   figma.showUI(__html__, { themeColors: true, width: 730, height: 530 });

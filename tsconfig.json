@@ -5,6 +5,8 @@
     "lib": ["ES2020", "DOM", "DOM.Iterable"],
     "module": "ESNext",
     "skipLibCheck": true,
+    "composite": true,
+    "allowSyntheticDefaultImports": true,
 
     /* Bundler mode */
     "moduleResolution": "bundler",
@@ -16,7 +18,6 @@
     "outDir": "dist",
     "types": ["@figma/plugin-typings"],
     "paths": {
-      "@src/*": ["./src/*"],
       "@ui/*": ["./src/ui/*"],
       "@core/*": ["./src/core/*"]
     },
@@ -27,7 +28,6 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src"],
-  "exclude": [".yarn"],
-  "references": [{ "path": "./tsconfig.node.json" }]
+  "include": ["src", "vite.config.ts"],
+  "exclude": [".yarn"]
 }
