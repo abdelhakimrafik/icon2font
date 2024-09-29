@@ -1,20 +1,23 @@
 {
   "compilerOptions": {
-    "target": "es6",
+    "target": "ESNext",
+    "module": "ESNext",
     "moduleResolution": "node",
     "esModuleInterop": true,
-    "allowJs": true,
-    "allowSyntheticDefaultImports": true,
+    "skipLibCheck": true,
     "strict": true,
-    "typeRoots": ["./node_modules/@types", "./node_modules/@figma"],
-    "baseUrl": "./",
-    "outDir": "dist",
+    "allowJs": true,
+    "noEmit": true,
+    "forceConsistentCasingInFileNames": true,
+    "allowSyntheticDefaultImports": true,
+    "isolatedModules": false,
+    "jsx": "react-jsx",
+    "lib": ["es6", "dom"],
+    "typeRoots": ["./node_modules/@figma"],
     "paths": {
-      "@src/*": ["./src/*"],
-      "@core/*": ["./src/core/*"]
-    },
-    "lib": ["es6", "dom"]
-  },
-  "exclude": ["node_modules"],
-  "skipLibCheck": true
+      "@common/*": ["./src/common/*"],
+      "@ui/*": ["./src/ui/*"],
+      "@plugin/*": ["./src/plugin/*"]
+    }
+  }
 }

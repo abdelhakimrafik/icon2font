@@ -1,6 +1,15 @@
 # Node
 node_modules
 
+# Yarn
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
+
 # Logs
 logs
 *.log
@@ -21,5 +30,4 @@ coverage
 .env.test
 
 # Figma
-out/
 dist/
