@@ -18,7 +18,7 @@ const generateName = (
 ) => {
   return `${prefix ? prefix + delimiter : ''}${name}${
     suffix ? delimiter + suffix : ''
-  }`.replace(/\s/g, '');
+  }`.replace(/[^a-zA-Z0-9-_]+/g, '');
 };
 
 const generateUnicode = (index: number) => {
