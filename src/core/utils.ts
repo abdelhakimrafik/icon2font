@@ -21,9 +21,11 @@ const generateName = (
   }`.replace(/\s/g, '');
 };
 
-const generateUnicode = (index: number) => {
-  return String.fromCharCode(START_UNICODE + index);
+const generateUnicode = (index: number, iconName: string) => {
+  const match = iconName.match(/^u([eE][0-9a-fA-F]{3,4})/i);
+  return match ? String.fromCharCode(parseInt(match[1], 16)) : String.fromCharCode(START_UNICODE + index);
 };
+
 
 export const exportGlyphs = (
   nodes: ReadonlyArray<SceneNode>,
@@ -40,7 +42,7 @@ export const exportGlyphs = (
         );
 
         const name = generateName(node.name, options);
-        const unicode = generateUnicode(index);
+        const unicode = generateUnicode(index, node.name);
 
         return {
           content: glyph,

@@ -71,3 +71,4 @@ export const iconToFont = async (
     html
   };
 };
+
